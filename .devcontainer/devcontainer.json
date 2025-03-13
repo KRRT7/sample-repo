@@ -1,0 +1,41 @@
+{
+    "name": "Uv test",
+    "image": "mcr.microsoft.com/devcontainers/python:3.12",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "tasks": {
+                    "version": "2.0.0",
+                    "tasks": [
+                        {
+                            "label": "Run codeflash",
+                            "type": "shell",
+                            "command": "python -m uv run codeflash --all",
+                            "options": {
+                                "env": {
+                                    "CODEFLASH_API_KEY": "${input:codeflashApiKey}"
+                                }
+                            },
+                            "problemMatcher": []
+                        }
+                    ],
+                    "inputs": [
+                        {
+                            "id": "codeflashApiKey",
+                            "type": "promptString",
+                            "description": "Please enter your CODEFLASH_API_KEY:",
+                            "defaultValue": ""
+                        }
+                    ]
+                }
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "charliermarsh.ruff",
+                "ms-azuretools.vscode-docker"
+            ]
+        }
+    },
+    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y python3-dev && python3 -m pip install uv && uv sync --link-mode=copy"
+}

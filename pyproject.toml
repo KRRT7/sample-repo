@@ -1,0 +1,24 @@
+[project]
+name = "Optimize-me"
+version = "0.1.0"
+description = "a helper repo that contains easily optimizable code for codeflash"
+authors = [
+    { name = "CodeFlash-ai" },
+]
+license = { text = "MIT" }
+dependencies = [
+    "black",
+    "numpy",
+    "codeflash",
+    "networkx",
+]
+requires-python = ">=3.9,<3.12"
+readme = "README.md"
+
+[tool.codeflash]
+# All paths are relative to this pyproject.toml's directory.
+module-root = "src"
+tests-root = "tests"
+test-framework = "pytest"
+ignore-paths = []
+formatter-cmds = ["black $file"]
