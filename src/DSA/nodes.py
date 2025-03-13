@@ -47,26 +47,30 @@ def find_cycle_vertices(edges):
 
 # derived from https://github.com/langflow-ai/langflow/pull/5263
 def sort_chat_inputs_first(self, vertices_layers: list[list[str]]) -> list[list[str]]:
-    # First check if any chat inputs have dependencies
-    for layer in vertices_layers:
-        for vertex_id in layer:
-            if "ChatInput" in vertex_id and self.get_predecessors(
-                self.get_vertex(vertex_id)
-            ):
-                return vertices_layers
-
-    # If no chat inputs have dependencies, move them to first layer
+    # Lists to accumulate chat inputs and vertices with dependencies
     chat_inputs_first = []
+    layers_with_dependencies = []
+
     for layer in vertices_layers:
-        layer_chat_inputs_first = [
-            vertex_id for vertex_id in layer if "ChatInput" in vertex_id
-        ]
+        layer_chat_inputs_first = []
+        layer_with_dependencies = []
+
+        for vertex_id in layer:
+            if "ChatInput" in vertex_id:
+                if self.get_predecessors(self.get_vertex(vertex_id)):
+                    # If any ChatInput has dependencies, return the original layers
+                    return vertices_layers
+                layer_chat_inputs_first.append(vertex_id)
+            else:
+                layer_with_dependencies.append(vertex_id)
+
         chat_inputs_first.extend(layer_chat_inputs_first)
-        for vertex_id in layer_chat_inputs_first:
-            # Remove the ChatInput from the layer
-            layer.remove(vertex_id)
+        layers_with_dependencies.append(layer_with_dependencies)
 
     if not chat_inputs_first:
         return vertices_layers
 
-    return [chat_inputs_first, *vertices_layers]
+    # Filter out empty layers
+    non_empty_layers = [layer for layer in layers_with_dependencies if layer]
+
+    return [chat_inputs_first, *non_empty_layers]
