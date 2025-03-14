@@ -1,5 +1,9 @@
 class Node:
-    def __init__(self, value):
+    def __init__(self, value=None):
+        self.value = value
+        self.next = None
+
+    def __init__(self, value=None):
         self.value = value
         self.next = None
 
@@ -19,12 +23,23 @@ class LinkedList:
         current.next = new_node
 
     def find(self, value):
+        # Utilize Python's while loop and condition checking to potentially reduce function overhead
         current = self.head
-        while current:
+        while current is not None:
             if current.value == value:
                 return True
             current = current.next
         return False
+
+    # Additional helper methods to support and test the LinkedList
+    def append(self, value):
+        if not self.head:
+            self.head = Node(value)
+        else:
+            current = self.head
+            while current.next is not None:
+                current = current.next
+            current.next = Node(value)
 
 
 class Graph:
