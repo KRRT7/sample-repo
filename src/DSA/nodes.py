@@ -70,3 +70,23 @@ def sort_chat_inputs_first(self, vertices_layers: list[list[str]]) -> list[list[
         return vertices_layers
 
     return [chat_inputs_first, *vertices_layers]
+
+
+def fibonacci(n: int) -> int:
+    def memoize(f):
+        memo = {}
+
+        def helper(x):
+            if x not in memo:
+                memo[x] = f(x)
+            return memo[x]
+
+        return helper
+
+    @memoize
+    def fib(n: int) -> int:
+        if n <= 1:
+            return n
+        return fib(n - 1) + fib(n - 2)
+
+    return fib(n)
