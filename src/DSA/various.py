@@ -3,20 +3,24 @@ class Node:
         self.value = value
         self.next = None
 
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
 
 class LinkedList:
     def __init__(self):
         self.head = None
+        self.tail = None  # Maintain a tail pointer
 
     def append(self, value):
         new_node = Node(value)
         if not self.head:
             self.head = new_node
-            return
-        current = self.head
-        while current.next:
-            current = current.next
-        current.next = new_node
+            self.tail = new_node  # Initialize the tail
+        else:
+            self.tail.next = new_node  # Append at the tail
+            self.tail = new_node  # Update the tail
 
     def find(self, value):
         current = self.head
